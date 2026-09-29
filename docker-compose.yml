@@ -1,0 +1,17 @@
+# Optional: run PostgreSQL in Docker (`docker compose up -d`).
+# If you have a local PostgreSQL instead, just create the DB/role shown in the README.
+services:
+  db:
+    image: postgres:16
+    container_name: microblog-db
+    environment:
+      POSTGRES_DB: microblog
+      POSTGRES_USER: microblog
+      POSTGRES_PASSWORD: microblog
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:

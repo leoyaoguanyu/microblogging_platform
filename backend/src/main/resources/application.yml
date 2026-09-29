@@ -1,0 +1,47 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: microblog
+  datasource:
+    url: jdbc:postgresql://localhost:5432/microblog
+    username: microblog
+    password: microblog
+  jpa:
+    hibernate:
+      ddl-auto: update        # demo convenience; see db/schema.sql for the designed schema
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+
+app:
+  jwt:
+    # must be >= 32 bytes for HS256; override with APP_JWT_SECRET in real deployments
+    secret: ${APP_JWT_SECRET:microblog-demo-secret-key-please-change-me-0123456789}
+    expiration-ms: 86400000   # 24h
+  cors:
+    allowed-origins: http://localhost:5173
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+
+---
+# Zero-setup profile: `mvn spring-boot:run -Dspring-boot.run.profiles=h2`
+spring:
+  config:
+    activate:
+      on-profile: h2
+  datasource:
+    url: jdbc:h2:mem:microblog;DB_CLOSE_DELAY=-1
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
